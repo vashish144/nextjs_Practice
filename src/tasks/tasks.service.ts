@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Task, TaskStatus } from './task.model';
 import { v7 as uuid } from 'uuid';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { GetTaskFilterDto } from './dto/get-taskes.filter';
+import { GetTaskFilterDto } from './dto/get-taskes-filter.dto';
 
 @Injectable()
 export class TasksService {
