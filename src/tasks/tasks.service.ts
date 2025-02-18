@@ -71,8 +71,10 @@ export class TasksService {
 
   constructor(
     @InjectRepository(TaskRepository)
-    private taskRepository: TaskRepository,
+    constructor(
+      @InjectRepository(Task) private readonly taskRepository: Repository<Task>,
   ) {}
+
 
   async getTaskById(id: string): Promise<Task> {
     const found = await this.taskRepository.findOne({ where: { id } });

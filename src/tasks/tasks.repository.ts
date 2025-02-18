@@ -1,7 +1,12 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { DataSource, Repository } from 'typeorm';
 import { Task } from './task.entity';
 
-@EntityRepository(Task)
+@Injectable()
 export class TaskRepository extends Repository<Task> {
-  // Custom repository methods can be added here
+  constructor(private dataSource: DataSource) {
+    super(Task, dataSource.createEntityManager());
+  }
+
+  // Custom repository methods here
 }
