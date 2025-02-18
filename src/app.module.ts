@@ -14,7 +14,6 @@ import { DataSource } from 'typeorm';
       username: 'postgres',
       password: 'root',
       database: 'task-management',
-      // entities: [Task],
       autoLoadEntities: true,
       synchronize: true,
       logging: true, // Enable logging
