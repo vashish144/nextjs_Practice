@@ -3,6 +3,9 @@ import { Module, OnModuleInit } from '@nestjs/common';
 import { TasksModule } from './tasks/tasks.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import { AuthModule } from './auth/auth.module';
+import {PassportModule} from '@nestjs/passport'
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -16,7 +19,13 @@ import { DataSource } from 'typeorm';
       database: 'task-management',
       autoLoadEntities: true,
       synchronize: true,
-      logging: true, // Enable logging
+      logging: false, // Enable logging
+    }),
+    AuthModule,
+    PassportModule.register({defaultStratgy:'jwt'}),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || 'default-secret', // Use environment variables for security
+      signOptions: { expiresIn: '1h' }, // Set expiration for tokens
     }),
   ],
 })
