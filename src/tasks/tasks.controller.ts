@@ -16,12 +16,13 @@ import { GetTaskFilterDto } from './dto/get-taskes-filter.dto';
 import { UpdateTaskStatusDto } from './dto/update-task.dto';
 import { Task } from './task.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-
+import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 @Controller('tasks')
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 export class TasksController {
-  constructor(private tasksService: TasksService) {}
-
+  constructor(private tasksService: TasksService) {
+  }
   // @Get()
   // getTasks(@Query() filterDto: GetTaskFilterDto): Task[] {
   //   if (Object.keys(filterDto).length) {

@@ -6,15 +6,18 @@ import { GetTaskFilterDto } from './dto/get-taskes-filter.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
 import { Repository } from 'typeorm';
-
+import { Logger } from '@nestjs/common';
+import { log } from 'console';
 @Injectable()
 export class TasksService {
+  private logger = new Logger('Tasks');
   constructor(
     @InjectRepository(Task) private readonly taskRepository: Repository<Task>,
-  ) {}
+  ) { }
 
   async getTaskById(id: string): Promise<Task> {
     const found = await this.taskRepository.findOne({ where: { id } });
+    this.logger.debug(`Task with ID ${id} not found`);
     if (!found) {
       throw new NotFoundException(`Task with ID ${id} not found`);
     }
@@ -28,7 +31,12 @@ export class TasksService {
       description,
       status: TaskStatus.OPEN,
     });
-    await this.taskRepository.save(task);
+    try {
+      await this.taskRepository.save(task);
+    } catch (error) {
+      this.logger.error(`Error in saving task ${error}`,error.stack);
+    }
+
     return task;
   }
   async deleteById(id: string): Promise<void> {
@@ -44,12 +52,13 @@ export class TasksService {
     await this.taskRepository.save(task);
     return task;
   }
-  
+
   async getAllTasks(): Promise<Task[]> {
     const found = await this.taskRepository.find();
+    this.logger.verbose(`Task found ${found}`);
     return found;
   }
-  
+
   async getTaskWithFilter(filterDto: GetTaskFilterDto): Promise<Task[]> {
     const { status, search } = filterDto;
     let tasks = await this.getAllTasks();
